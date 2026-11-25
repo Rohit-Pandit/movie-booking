@@ -57,6 +57,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+builder.Services.AddScoped<ILocationService, LocationService>();
+
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT key is missing.");
 
