@@ -22,4 +22,17 @@ public class MovieService : IMovieService
         }
         return await moviesQuery.ToListAsync();
     }
+
+    public async Task<List<Movie>> GetMoviesByLocationAsync(int locationId)
+    {
+        if(locationId <= 0)
+        {
+            throw new ArgumentException("Invalid location ID.");
+        }
+
+        var movies = await _context.Movies
+            .Where(m => m.MovieLocations.Any(ml => ml.LocationId == locationId))
+            .ToListAsync();
+        return movies;
+    }
 }

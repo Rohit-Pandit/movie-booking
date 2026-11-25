@@ -80,6 +80,29 @@ namespace MovieBooking.Api.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("MovieBooking.Api.Models.MovieLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieLocations");
+                });
+
             modelBuilder.Entity("MovieBooking.Api.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -113,6 +136,25 @@ namespace MovieBooking.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MovieBooking.Api.Models.MovieLocation", b =>
+                {
+                    b.HasOne("MovieBooking.Api.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieBooking.Api.Models.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Movie");
                 });
 #pragma warning restore 612, 618
         }

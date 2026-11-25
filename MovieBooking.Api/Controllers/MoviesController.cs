@@ -21,6 +21,15 @@ namespace MovieBooking.Api.Controllers
             return Ok(movies);
         }
 
-        
+        [HttpGet("by-location")]
+        public async Task<IActionResult> GetMoviesByLocation([FromQuery] int locationId)
+        {
+            if(locationId <= 0)
+            {
+                return BadRequest("Invalid location ID.");
+            }
+            var movies = await _movieService.GetMoviesByLocationAsync(locationId);
+            return Ok(movies);
+        }
     }
 }

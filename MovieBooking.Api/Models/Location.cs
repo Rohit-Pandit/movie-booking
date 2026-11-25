@@ -8,4 +8,6 @@ public class Location
  
     public bool IsActive  { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<MovieLocation> MovieLocations { get; set; } = new List<MovieLocation>();
 }

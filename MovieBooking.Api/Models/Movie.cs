@@ -8,4 +8,7 @@ public class Movie
     public int DurationMinutes { get; set; }
     public required string Language { get; set; }
     public int ReleaseYear { get; set; }
+
+    public ICollection<MovieLocation> MovieLocations { get; set; } = new List<MovieLocation>();
+    
 }
