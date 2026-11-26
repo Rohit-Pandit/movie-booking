@@ -13,4 +13,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Location> Locations { get; set; }
 
     public DbSet<MovieLocation> MovieLocations { get; set; }
+
+    public DbSet<Show> Shows { get; set; }
+    public DbSet<Seat> Seats { get; set; }
+    public DbSet<ShowSeat> ShowSeats { get; set; }
 }

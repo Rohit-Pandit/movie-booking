@@ -103,6 +103,38 @@ namespace MovieBooking.Api.Migrations
                     b.ToTable("MovieLocations");
                 });
 
+            modelBuilder.Entity("MovieBooking.Api.Models.Show", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ShowStartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TicketPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Shows");
+                });
+
             modelBuilder.Entity("MovieBooking.Api.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -138,7 +170,72 @@ namespace MovieBooking.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Seat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SeatNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Seats");
+                });
+
+            modelBuilder.Entity("ShowSeat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShowId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("ShowId");
+
+                    b.ToTable("ShowSeats");
+                });
+
             modelBuilder.Entity("MovieBooking.Api.Models.MovieLocation", b =>
+                {
+                    b.HasOne("MovieBooking.Api.Models.Location", "Location")
+                        .WithMany("MovieLocations")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieBooking.Api.Models.Movie", "Movie")
+                        .WithMany("MovieLocations")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieBooking.Api.Models.Show", b =>
                 {
                     b.HasOne("MovieBooking.Api.Models.Location", "Location")
                         .WithMany()
@@ -155,6 +252,40 @@ namespace MovieBooking.Api.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("ShowSeat", b =>
+                {
+                    b.HasOne("Seat", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieBooking.Api.Models.Show", "Show")
+                        .WithMany("ShowSeats")
+                        .HasForeignKey("ShowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Seat");
+
+                    b.Navigation("Show");
+                });
+
+            modelBuilder.Entity("MovieBooking.Api.Models.Location", b =>
+                {
+                    b.Navigation("MovieLocations");
+                });
+
+            modelBuilder.Entity("MovieBooking.Api.Models.Movie", b =>
+                {
+                    b.Navigation("MovieLocations");
+                });
+
+            modelBuilder.Entity("MovieBooking.Api.Models.Show", b =>
+                {
+                    b.Navigation("ShowSeats");
                 });
 #pragma warning restore 612, 618
         }
