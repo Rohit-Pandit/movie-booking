@@ -10,9 +10,12 @@ public class ShowsController : ControllerBase
 {
     private readonly IShowService _showService;
 
-    public ShowsController(IShowService showService)
+    private readonly IShowSeatService _showSeatService;
+
+    public ShowsController(IShowService showService, IShowSeatService showSeatService)
     {
         _showService = showService;
+        _showSeatService = showSeatService;
     }
 
     [HttpGet]
@@ -28,5 +31,18 @@ public class ShowsController : ControllerBase
         var shows = await _showService.GetShowsAsync(movieId, locationId);
 
         return Ok(shows);
+    }
+
+    [HttpGet("{showId:int}/seats")]
+    public async Task<IActionResult> GetSeats( int showId)
+    {
+        if (showId <= 0)
+        {
+            return BadRequest("Invalid show ID.");
+        }
+
+        var seats = await _showSeatService.GetShowSeatsAsync(showId);
+
+        return Ok(seats);
     }
 }

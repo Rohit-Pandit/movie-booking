@@ -61,6 +61,8 @@ builder.Services.AddScoped<ILocationService, LocationService>();
 
 builder.Services.AddScoped<IShowService, ShowService>();
 
+builder.Services.AddScoped<IShowSeatService, ShowSeatService>();
+
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT key is missing.");
 

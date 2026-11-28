@@ -17,4 +17,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<Show> Shows { get; set; }
     public DbSet<Seat> Seats { get; set; }
     public DbSet<ShowSeat> ShowSeats { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ShowSeat>()
+            .HasIndex(ss => new { ss.ShowId, ss.SeatId })
+            .IsUnique();
+    }
 }

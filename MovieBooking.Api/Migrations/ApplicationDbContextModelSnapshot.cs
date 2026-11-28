@@ -211,7 +211,8 @@ namespace MovieBooking.Api.Migrations
 
                     b.HasIndex("SeatId");
 
-                    b.HasIndex("ShowId");
+                    b.HasIndex("ShowId", "SeatId")
+                        .IsUnique();
 
                     b.ToTable("ShowSeats");
                 });
@@ -257,7 +258,7 @@ namespace MovieBooking.Api.Migrations
             modelBuilder.Entity("ShowSeat", b =>
                 {
                     b.HasOne("Seat", "Seat")
-                        .WithMany()
+                        .WithMany("ShowSeats")
                         .HasForeignKey("SeatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -284,6 +285,11 @@ namespace MovieBooking.Api.Migrations
                 });
 
             modelBuilder.Entity("MovieBooking.Api.Models.Show", b =>
+                {
+                    b.Navigation("ShowSeats");
+                });
+
+            modelBuilder.Entity("Seat", b =>
                 {
                     b.Navigation("ShowSeats");
                 });
